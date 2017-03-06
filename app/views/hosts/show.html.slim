@@ -1,0 +1,20 @@
+/ - form_tag host_path do
+/   .form-group.date-range-filter
+/     .date-range-filter.row
+/       .col-md-6
+/         = date_field :q, :date_from, :value => @date_from.strftime('%Y-%m-%d')
+/       .col-md-6
+/         = date_field :q, :date_to, :value => @date_to.strftime('%Y-%m-%d')
+/   .form-actions
+/     = button_tag "search", {value: :html}
+h1 = @host.name
+table
+  thead
+      tr
+        th from
+        th to
+  tbody
+    - @presence_bounds.each do |bound|
+      tr
+        td = bound[:start]
+        td = bound[:end]

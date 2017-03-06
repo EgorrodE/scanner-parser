@@ -1,0 +1,14 @@
+table
+  thead
+      tr
+        th id
+        th Name
+        th MAC
+  tbody
+    - @hosts.each do |host|
+      tr
+        td 
+          = link_to host_path(host) do
+            = host.id 
+        td = host.name
+        td = host.address

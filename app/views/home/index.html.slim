@@ -1,0 +1,13 @@
+h2 
+  | Welcome to Oleg Zubchenko's network scanner on RasberyPi at RubyroidLabs HQ 
+h3
+  | Please enter a golopal path to a local folder with RasperiPi data
+.folder-selector
+  = form_for('path', url: upload_data_path, html: {method: :post}) do |f|
+    - if @error
+      = @error
+    = f.text_field :path, value: @path
+    = f.submit 'save'
+- if @arp_response
+  = "Arp:  #{@arp_response}" 
+  = "Npam: #{@nmap_response}" 
