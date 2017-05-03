@@ -6,10 +6,10 @@ class NmapRecord < ApplicationRecord
   belongs_to :host
 
   def self.upload_data(path)
-    @arp_path = File.join(path, 'nmap')
+    @nmap_path = File.join(path, 'nmap')
     @success_count = 0
     @failure_count = 0
-    return { error: 'Arp directory not found' } unless File.exists? @arp_path
+    return { error: 'Arp directory not found' } unless File.exists? @nmap_path
     create_records
     return { result: "#{@success_count} recordes created, #{@failure_count} failed"}
   end
@@ -17,9 +17,12 @@ class NmapRecord < ApplicationRecord
   private
 
   def self.create_records
-    Dir.entries(@arp_path).select do |entry|
-      File.directory?(File.join(@arp_path, entry)) && !(entry == '.' || entry == '..')
-    end.each{ |entry| create_date_records(File.join(@arp_path, entry)) }
+    # Dir.entries(@nmap_path).select do |entry|
+    #   File.directory?(File.join(@nmap_path, entry)) && !(entry == '.' || entry == '..')
+    # end.each{ |entry| create_date_records(File.join(@nmap_path, entry)) }
+    Dir.entries(@nmap_path).select do |entry|
+      File.directory?(File.join(@nmap_path, entry)) && !(entry == '.' || entry == '..')
+    end.each{ |entry| create_date_records(File.join(@nmap_path, entry)) }
   end
 
   def self.create_date_records(date_folder)
@@ -49,7 +52,7 @@ class NmapRecord < ApplicationRecord
 
     @record = find_by(params.slice(:timestamp, :ip_address)) || new(params)
 
-    @record.host = Host.find_by(name: params[:host_name]) || 
+    @record.host = Host.find_by(name: params[:host_name]) ||
       ArpRecord.where(timestamp: (params[:timestamp] - TIME_ERROR)..(params[:timestamp] + TIME_ERROR), ip_address: params[:ip_address]).first.try(:host).try{ |h| h.update_and_return(name: params[:host_name]) } ||
       Host.create(name: params[:host_name])
 

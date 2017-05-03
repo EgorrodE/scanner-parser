@@ -19,7 +19,6 @@ class Host < ApplicationRecord
     @start_bound = [@arp.first.try(:timestamp), @nmap.first.try(:timestamp)].min
     while @start_bound
       next_bounds_pair
-      puts "START = #{@start_bound}"
     end
     @bounds
   end
@@ -30,7 +29,6 @@ class Host < ApplicationRecord
       @arp.select{ |arp| arp.try(:timestamp) > @start_bound && arp.try(:timestamp) < @start_bound + CHECK_INTERVAL + TIME_ERROR }.first.try(:timestamp),
       @nmap.select{ |nmap| nmap.try(:timestamp) > @start_bound && nmap.try(:timestamp) < @start_bound + CHECK_INTERVAL + TIME_ERROR }.first.try(:timestamp)
     ].compact.min
-    puts "END = #{@end_bound}"
     unless @end_bound
       @end_bound = @start_bound
       next_start_bound
@@ -46,7 +44,6 @@ class Host < ApplicationRecord
         @arp.select{ |arp| arp.try(:timestamp) > @end_bound && arp.try(:timestamp) < @end_bound + CHECK_INTERVAL + TIME_ERROR }.first.try(:timestamp),
         @nmap.select{ |nmap| nmap.try(:timestamp) > @end_bound && nmap.try(:timestamp) < @end_bound + CHECK_INTERVAL + TIME_ERROR }.first.try(:timestamp)
       ].compact.min
-      puts "NEXT = #{next_bound}"
       break unless next_bound
       @end_bound = next_bound
     end

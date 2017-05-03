@@ -14,11 +14,11 @@ class HostsController < ApplicationController
 
   private
   def set_params
-    params[:q] ||= { 
-      "date_from" => DateTime.now.beginning_of_month - 1.month, 
+    params[:q] ||= {
+      "date_from" => DateTime.now.beginning_of_month - 2.month,
       "date_to" => DateTime.now.end_of_month
     }
-    params[:q][:date_from] ||= DateTime.now.beginning_of_month - 1.month
+    params[:q][:date_from] ||= DateTime.now.beginning_of_month - 2.month
     params[:q][:date_to] ||= DateTime.now.end_of_month
   end
 end

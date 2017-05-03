@@ -26,6 +26,10 @@ class ArpRecord < ApplicationRecord
     Dir.entries(@arp_path).select do |entry|
       File.directory?(File.join(@arp_path, entry)) && !(entry == '.' || entry == '..')
     end.each{ |entry| create_date_records(File.join(@arp_path, entry)) }
+    
+    Dir.entries(@arp_path).select do |entry|
+      File.file?(File.join(@arp_path, entry))
+    end.each{ |entry| create_timestamp_records(File.join(@arp_path, entry)) }
   end
 
   def self.create_date_records(date_folder)

@@ -13,7 +13,6 @@ class HomeController < ApplicationController
       render template: 'home/index'
       return
     end
-
     @arp_response = ArpRecord.upload_data(@path)
     @nmap_response = NmapRecord.upload_data(@path)
 
